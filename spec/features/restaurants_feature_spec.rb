@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+
 feature 'restaurants' do
   context 'no restaurants have been added' do
     scenario 'should display a prompt to add a restaurant' do
@@ -20,7 +21,7 @@ feature 'restaurants' do
     end
   end
   context 'creating restaurants' do
-    scenario 'prompts user to fill out the form and then displays the new restauran' do
+    scenario 'prompts user to fill out the form and then displays the new restaurant' do
       visit '/restaurants'
       click_link 'add restaurant'
       fill_in 'Name', with: 'KFC'
