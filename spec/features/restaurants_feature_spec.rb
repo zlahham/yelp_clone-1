@@ -54,13 +54,29 @@ feature 'restaurants' do
   end
 
   context 'deleting restaurants' do
-    before { Restaurant.create(name: 'KFC') }
 
-    scenario 'removes ta restaurant when a user clicks a delete link' do
+    before(:each) do
+      kfc = Restaurant.create(name: 'KFC')
       visit restaurants_path
+
+    end
+
+    scenario 'removes a restaurant when a user clicks a delete link' do
       click_link 'Delete KFC'
       expect(page).not_to have_content 'KFC'
       expect(page).to have_content 'Restaurant deleted successfully'
     end
+
+    scenario 'removes all reviews for a restaurant when its deleted' do
+      click_link 'Review KFC'
+      fill_in "Thoughts", with: "so so"
+      select '3', from: 'Rating'
+      click_button 'Leave Review'
+      expect(current_path).to eq restaurants_path
+      click_link 'Delete KFC'
+      expect(page).not_to have_content 'so so'
+    end
+
+
   end
 end
