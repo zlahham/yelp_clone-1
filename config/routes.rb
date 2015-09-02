@@ -2,7 +2,9 @@ Rails.application.routes.draw do
 
   # get '/restaurants' => 'restaurants#index'
   # get '/restaurants/new' => 'restaurants#index'
-  resources :restaurants
+  resources :restaurants do
+    resources :reviews
+  end
 
 
 
