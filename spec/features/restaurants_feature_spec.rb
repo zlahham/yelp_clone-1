@@ -10,7 +10,7 @@ feature 'restaurants' do
   end
 
   context 'restaurants have been added' do
-    before do
+    before(:each) do
       sign_up
       user = User.last
       user.restaurants.create(name: 'KFC')
@@ -24,25 +24,12 @@ feature 'restaurants' do
   end
 
   context 'creating restaurants' do
-
-     before do
+    scenario 'prompts user to fill out the form and then displays the new restaurant' do
       sign_up
       user = User.last
       user.restaurants.create(name: 'KFC')
-      end
 
-    scenario 'prompts user to fill out the form and then displays the new restaurant' do
-      # user = User.create(:email = "test@example.com'zaid@gmail.com", :password = )
-
-      # visit restaurants_path
-      # click_link("Sign up")
-      # expect(current_path).to eq '/users/sign_up'
-      # sign_up
-
-      visit '/'
-      click_link 'add restaurant'
-      fill_in 'Name', with: 'KFC'
-      click_button 'Create Restaurant'
+      visit restaurants_path
       expect(page).to have_content('KFC')
       expect(current_path).to eq restaurants_path
     end
@@ -66,7 +53,11 @@ feature 'restaurants' do
   end
 
   context 'viewing restaurants' do
-    let!(:kfc) { Restaurant.create(name: 'KFC') }
+    before(:each) do
+      sign_up
+    end
+
+    let!(:kfc) { User.last.restaurants.create(name: 'KFC') }
 
     scenario 'lets a user view a restaurant' do
       visit restaurants_path
@@ -80,7 +71,6 @@ feature 'restaurants' do
     # the before statment creates an entry in the db, whereas the let in the previous test simply creates a double
 
     before { Restaurant.create name: 'KFC' }
-
 
     scenario 'let a user edit a restaurant' do
 
