@@ -13,10 +13,9 @@ describe Restaurant, type: :model do
   it { should validate_uniqueness_of(:name)}
 
   # it 'is not valid unless it has a unique name' do
-  #   sign_up
-  #   user = User.last
+  #   user = User.create(email: 'test@test.com', password: '12345678', password_confirmation: '12345678')
   #   user.restaurants.create(name: "Moe's Tavern")
   #   restaurant = Restaurant.new(name: "Moe's Tavern")
-  #   expect(restaurant).to have(1).error_on(:name)
+  #   expect(restaurant).to_not have(1).error_on(:name)
   # end
 end
