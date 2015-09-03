@@ -69,17 +69,19 @@ feature 'restaurants' do
 
   context 'editing restaurants' do
     # the before statment creates an entry in the db, whereas the let in the previous test simply creates a double
-
-    before { Restaurant.create name: 'KFC' }
+    #
+    # before(:each) do
+    #   sign_up
+    #   user = User.last
+    #   user.restaurants.create(name: 'KFC')
+    # end
 
     scenario 'let a user edit a restaurant' do
+      sign_up
+      user = User.last
+      user.restaurants.create(name: 'KFC')
 
       visit restaurants_path
-      click_link("Sign up")
-      expect(current_path).to eq '/users/sign_up'
-      sign_up
-      expect(current_path).to eq '/'
-
       click_link 'Edit KFC'
       fill_in 'Name', with: 'Kentucky Fried Chicken'
       click_button 'Update Restaurant'
@@ -90,17 +92,20 @@ feature 'restaurants' do
 
   context 'deleting restaurants' do
     before(:each) do
-      Restaurant.create(name: 'KFC')
-      visit restaurants_path
+      sign_up
+      user = User.last
+      user.restaurants.create(name: 'KFC')
     end
 
     scenario 'removes a restaurant when a user clicks a delete link' do
+      visit '/'
       click_link 'Delete KFC'
       expect(page).not_to have_content 'KFC'
       expect(page).to have_content 'Restaurant deleted successfully'
     end
 
     scenario 'removes all reviews for a restaurant when its deleted' do
+      visit '/'
       click_link 'Review KFC'
       fill_in 'Thoughts', with: 'so so'
       select '3', from: 'Rating'

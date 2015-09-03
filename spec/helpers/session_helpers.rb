@@ -8,5 +8,4 @@ module SessionHelpers
       fill_in('Password confirmation', with: 'testtest')
       click_button('Sign up')
   end
-
- end
+end

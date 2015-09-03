@@ -1,7 +1,11 @@
 require 'rails_helper'
 
 feature 'reviewing' do
-  before {Restaurant.create name: 'KFC'}
+  before(:each) do
+    sign_up
+    user = User.last
+    user.restaurants.create(name: 'KFC')
+  end
 
   scenario 'allows users to leave a review using a form' do
     visit restaurants_path
