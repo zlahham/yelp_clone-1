@@ -11,7 +11,9 @@ feature 'restaurants' do
 
   context 'restaurants have been added' do
     before do
-      Restaurant.create(name: 'KFC')
+      sign_up
+      user = User.last
+      user.restaurants.create(name: 'KFC')
     end
 
     scenario 'display restaurants' do
@@ -22,8 +24,22 @@ feature 'restaurants' do
   end
 
   context 'creating restaurants' do
+
+     before do
+      sign_up
+      user = User.last
+      user.restaurants.create(name: 'KFC')
+      end
+
     scenario 'prompts user to fill out the form and then displays the new restaurant' do
-      visit restaurants_path
+      # user = User.create(:email = "test@example.com'zaid@gmail.com", :password = )
+
+      # visit restaurants_path
+      # click_link("Sign up")
+      # expect(current_path).to eq '/users/sign_up'
+      # sign_up
+
+      visit '/'
       click_link 'add restaurant'
       fill_in 'Name', with: 'KFC'
       click_button 'Create Restaurant'
@@ -34,6 +50,12 @@ feature 'restaurants' do
     context 'an invalid Restaurant' do
       it 'does not let you submit a name that is too short' do
         visit restaurants_path
+
+        click_link("Sign up")
+        expect(current_path).to eq '/users/sign_up'
+        sign_up
+        expect(current_path).to eq '/'
+
         click_link 'add restaurant'
         fill_in 'Name', with: 'kf'
         click_button 'Create Restaurant'
@@ -56,10 +78,18 @@ feature 'restaurants' do
 
   context 'editing restaurants' do
     # the before statment creates an entry in the db, whereas the let in the previous test simply creates a double
+
     before { Restaurant.create name: 'KFC' }
 
+
     scenario 'let a user edit a restaurant' do
+
       visit restaurants_path
+      click_link("Sign up")
+      expect(current_path).to eq '/users/sign_up'
+      sign_up
+      expect(current_path).to eq '/'
+
       click_link 'Edit KFC'
       fill_in 'Name', with: 'Kentucky Fried Chicken'
       click_button 'Update Restaurant'
