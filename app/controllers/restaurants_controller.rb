@@ -11,19 +11,12 @@ class RestaurantsController < ApplicationController
   end
 
   def create
-    # @user = session[:user_id]
     @restaurant = current_user.restaurants.new(restaurant_params)
     if @restaurant.save
       redirect_to restaurants_path
     else
       render 'new'
     end
-    # @restaurant = @Restaurant.new(restaurant_params)
-    # if @restaurant.save
-    #   redirect_to restaurants_path
-    # else
-    #   render 'new'
-    # end
   end
 
   def restaurant_params
@@ -36,6 +29,10 @@ class RestaurantsController < ApplicationController
 
   def edit
     @restaurant = Restaurant.find(params[:id])
+    if current_user.id != @restaurant.user_id
+      flash[:notice] = 'You cannot edit that'
+      redirect_to restaurants_path
+    end
   end
 
   def update

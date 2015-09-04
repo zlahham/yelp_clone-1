@@ -3,6 +3,7 @@ class Restaurant < ActiveRecord::Base
   validates :user, presence: true
   belongs_to :user
   has_many :reviews, -> { extending WithUserAssociationExtension }, dependent: :destroy
+
   def build_review(attributes = {}, user)
     review = reviews.build(attributes)
     review.user = user

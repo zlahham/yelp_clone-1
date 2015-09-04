@@ -75,16 +75,29 @@ feature 'restaurants' do
   end
 
   context 'editing restaurants' do
-    scenario 'let a user edit a restaurant' do
+    before(:each) do
       sign_up
-      user = User.last
+      user = User.first
       user.restaurants.create(name: 'KFC')
+    end
 
+    scenario 'let a user edit a restaurant that belongs to them' do
       visit restaurants_path
       click_link 'Edit KFC'
       fill_in 'Name', with: 'Kentucky Fried Chicken'
       click_button 'Update Restaurant'
       expect(page).to have_content 'Kentucky Fried Chicken'
+      expect(current_path).to eq restaurants_path
+    end
+
+    scenario 'do not let a user edit a restaurant that does not belong to them' do
+      click_link 'Sign out'
+      expect(page).to have_content 'Signed out successfully.'
+      sign_up2
+      user2 = User.last
+      visit restaurants_path
+      click_link 'Edit KFC'
+      expect(page).to have_content 'You cannot edit that'
       expect(current_path).to eq restaurants_path
     end
   end
