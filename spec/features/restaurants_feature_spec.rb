@@ -97,7 +97,7 @@ feature 'restaurants' do
       user2 = User.last
       visit restaurants_path
       click_link 'Edit KFC'
-      expect(page).to have_content 'You cannot edit that'
+      expect(page).to have_content 'You cannot edit that, if you did not add the restaurant'
       expect(current_path).to eq restaurants_path
     end
   end
