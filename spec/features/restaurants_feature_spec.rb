@@ -109,15 +109,25 @@ feature 'restaurants' do
       user.restaurants.create(name: 'KFC')
     end
 
-    scenario 'removes a restaurant when a user clicks a delete link' do
+    scenario 'let a user delete a restaurant that belongs to them' do
       visit '/'
       click_link 'Delete KFC'
       expect(page).not_to have_content 'KFC'
       expect(page).to have_content 'Restaurant deleted successfully'
     end
 
+    scenario 'do not let a user delete a restaurant that does not belong to them' do
+      click_link 'Sign out'
+      expect(page).to have_content 'Signed out successfully.'
+      sign_up2
+      user2 = User.last
+      visit restaurants_path
+      click_link 'Delete KFC'
+      expect(page).to have_content 'KFC'
+    end
+
     scenario 'removes all reviews for a restaurant when its deleted' do
-      visit '/'
+      visit restaurants_path
       click_link 'Review KFC'
       fill_in 'Thoughts', with: 'so so'
       select '3', from: 'Rating'
