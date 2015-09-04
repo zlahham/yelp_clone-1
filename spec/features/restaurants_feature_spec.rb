@@ -34,11 +34,18 @@ feature 'restaurants' do
       expect(current_path).to eq restaurants_path
     end
 
+    scenario 'prompts user to sign in when creating a restaurant' do
+      visit restaurants_path
+      click_link 'add restaurant'
+      expect(page).to have_content('Log in')
+      expect(current_path).to eq '/users/sign_in'
+    end
+
     context 'an invalid Restaurant' do
       it 'does not let you submit a name that is too short' do
         visit restaurants_path
 
-        click_link("Sign up")
+        click_link('Sign up')
         expect(current_path).to eq '/users/sign_up'
         sign_up
         expect(current_path).to eq '/'
@@ -68,14 +75,6 @@ feature 'restaurants' do
   end
 
   context 'editing restaurants' do
-    # the before statment creates an entry in the db, whereas the let in the previous test simply creates a double
-    #
-    # before(:each) do
-    #   sign_up
-    #   user = User.last
-    #   user.restaurants.create(name: 'KFC')
-    # end
-
     scenario 'let a user edit a restaurant' do
       sign_up
       user = User.last
