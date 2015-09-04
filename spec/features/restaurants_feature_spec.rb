@@ -34,11 +34,21 @@ feature 'restaurants' do
       expect(current_path).to eq restaurants_path
     end
 
-    scenario 'prompts user to sign in when creating a restaurant' do
-      visit restaurants_path
-      click_link 'add restaurant'
-      expect(page).to have_content('Log in')
-      expect(current_path).to eq '/users/sign_in'
+# <<<<<<< HEAD
+#     scenario 'prompts user to sign in when creating a restaurant' do
+#       visit restaurants_path
+#       click_link 'add restaurant'
+#       expect(page).to have_content('Log in')
+#       expect(current_path).to eq '/users/sign_in'
+# =======
+    context "not signed in" do
+      scenario 'user must be logged in to create a restaurant' do
+        visit '/'
+        click_link 'add restaurant'
+        expect(Restaurant.count).to be(0)
+        expect(page).to have_content('You need to sign in or sign up before continuing')
+      end
+# >>>>>>> f3bd263eba7fc27d4a77759671ac1e89265ee6ca
     end
 
     context 'an invalid Restaurant' do
